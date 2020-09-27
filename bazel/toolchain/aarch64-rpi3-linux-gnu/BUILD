@@ -5,41 +5,41 @@ load(":cc_toolchain_config.bzl", "cc_toolchain_config")
 filegroup(name = "empty")
 
 filegroup(
-  name = 'wrappers',
-  srcs = glob([
-    'wrappers/**',
-  ]),
+    name = "wrappers",
+    srcs = glob([
+        "wrappers/**",
+    ]),
 )
 
 filegroup(
-  name = 'all_files',
-  srcs = [
-    '@aarch64-rpi3-linux-gnu-sysroot//:sysroot',
-    '@aarch64-rpi3-linux-gnu//:toolchain',
-    ':wrappers',
-  ],
+    name = "all_files",
+    srcs = [
+        ":wrappers",
+        "@aarch64-rpi3-linux-gnu-sysroot//:sysroot",
+        "@aarch64-rpi3-linux-gnu//:toolchain",
+    ],
 )
 
 cc_toolchain_config(name = "aarch64_toolchain_config")
 
 cc_toolchain(
     name = "aarch64_toolchain",
-    toolchain_identifier = "aarch64-toolchain",
-    toolchain_config = ":aarch64_toolchain_config",
     all_files = ":all_files",
     compiler_files = ":all_files",
     dwp_files = ":empty",
     linker_files = ":all_files",
     objcopy_files = ":empty",
     strip_files = ":empty",
+    toolchain_config = ":aarch64_toolchain_config",
+    toolchain_identifier = "aarch64-toolchain",
 )
 
 cc_toolchain_suite(
     name = "gcc_toolchain",
+    tags = ["manual"],
     toolchains = {
         "aarch64": ":aarch64_toolchain",
     },
-    tags = ["manual"]
 )
 
 toolchain(
